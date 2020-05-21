@@ -1,0 +1,7 @@
+*.pyc
+
+.ipynb_checkpoints/*
+
+T3.ipynb
+
+test.py

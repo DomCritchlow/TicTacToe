@@ -1,3 +1,7 @@
+import time 
+import sys 
+import os 
+
 class Board():
     
     def __init__(self, n, boarder = "#"):
@@ -67,10 +71,12 @@ class Game():
         self.gameover = False
         self.tie = False
         self.iswinner = False
+        self.board_progression = []
         
     def move(self, row, col, show = False):
         
         if self.Board.place(self.player, row, col, show):
+            self.board_progression.append(str(self.Board))
             self.move_count += 1
             
             self.checkwinner(row, col)
@@ -132,7 +138,7 @@ class Game():
             self.win()
             return 
         
-    
+        
         #check diag 2
         diag2_count = 0
         for i in range(self.Board.board_size):
@@ -184,3 +190,30 @@ class Game():
     def __repr__(self):
         
         return self.__str__()
+    
+    def animate_game(self, speed=0.2):
+        
+        if self.isgameover():
+            ipy = False
+            try:
+                from IPython import get_ipython 
+                ipy = get_ipython() is not None
+            except:
+                pass
+        
+            if ipy:
+                from IPython.display import clear_output
+                for i in range(self.move_count):
+                    clear_output(wait=True)
+                    print(self.board_progression[i])
+                    time.sleep(speed)
+            else:
+                for i in range(self.move_count):
+                    os.system("clear") 
+                    print(self.board_progression[i])
+                    time.sleep(speed)
+                    
+        else:
+            print("Game has not finished!")
+            
+            
